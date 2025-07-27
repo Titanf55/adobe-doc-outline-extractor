@@ -56,11 +56,11 @@ Build a fully offline PDF outline extractor that:
 
 ```
 adobe/
-├── pdfs/                   # Input PDFs
+├── input/                   # Input PDFs
 │   └── file01.pdf
-├── outputs/                # Output JSONs
+├── output/                # Output JSONs
 │   └── outline_output.json
-├── final_main_FIXED.py     # Main script
+├── pdf_parser.py     # Main script
 ├── Dockerfile              # Docker config
 ├── requirements.txt        # Dependencies
 └── README.md               # This file
@@ -92,12 +92,39 @@ docker build -t pdf-outline .
 **Run the container:**
 
 ```bash
-docker run --rm -v "$PWD/pdfs:/app/pdfs" -v "$PWD/outputs:/app/outputs" pdf-outline
+docker run --rm -v "$PWD/input:/app/input" -v "$PWD/output:/app/output" pdf-outline
 ```
 
-> 📌 The script processes all PDFs in `pdfs/` and writes corresponding outline JSONs to `outputs/`.
+> 📌 The script processes all PDFs in `input/` and writes corresponding outline JSONs to `output/`.
 
 ---
+
+## 🌐 Multilingual Support
+Our solution supports Unicode-based, text-layered PDFs.
+
+- ✅ English
+- ✅ Chinese (Simplified & Traditional)
+
+```
+⚠️ Note: Only English and Chinese-language PDFs were tested. Other languages may not produce reliable results, especially if their text structure or encoding varies.
+```
+
+The model works independently of word meaning, focusing on font size and layout — making it robust across well-formatted, searchable PDFs.
+
+### 📄 Chinese PDF Sample Output
+
+Input PDF: `與文學場域的建構.pdf`  
+Extracted JSON:
+
+```json
+{
+  "title": "與文學場域的建構",
+  "outline": [
+    { "level": "H1", "text": "一　前言", "page": 1 },
+    { "level": "H2", "text": "二　文學資源的選擇", "page": 2 }
+  ]
+}
+```
 
 ## ⏱️ Performance
 
@@ -114,19 +141,39 @@ docker run --rm -v "$PWD/pdfs:/app/pdfs" -v "$PWD/outputs:/app/outputs" pdf-outl
 - Drishti Chaudhary  
 - Kashish Rajput  
 
+## ⚠️ Limitations
 
+- ❌ Does not support image-based (scanned) PDFs
 
+- 🔤 Heading detection is based purely on font size and formatting, not semantic content
 
+- 🧾 Output assumes clean document structure — noisy PDFs may require post-cleaning
+
+- 🛠 No OCR layer yet (could be future work)
+
+---
+
+## 🚧 Future Improvements
+
+- Add OCR (e.g., Tesseract) for scanned PDFs
+
+- GUI tool using Streamlit or Flask
+
+- Export output as HTML visual outline
+
+- Allow user-defined heading thresholds
 
 ---
 
 ## ✅ Evaluation Criteria Coverage
 
-| Criteria                    | Covered? | Notes                           |
-|-----------------------------|----------|----------------------------------|
-| Fully Offline               | ✅        | Uses local parsing only          |
-| PDF up to 50 pages          | ✅        | Tested                           |
-| JSON output as specified    | ✅        | Matches schema                   |
-| Dockerized                  | ✅        | Dockerfile included              |
-| Runtime ≤ 10 seconds        | ✅        | Lightweight parsing              |
-| No Internet / No Hardcoding | ✅        | All paths dynamic                |
+| Criteria                         | Covered? | Notes                                                                 |
+|----------------------------------|----------|-----------------------------------------------------------------------|
+| Fully Offline                    | ✅        | Uses local PDF parsing only — no cloud or APIs                        |
+| PDF up to 50 pages               | ✅        | Tested with documents of various lengths                              |
+| JSON output as specified         | ✅        | Matches required schema with title, headings, and page numbers        |
+| Dockerized                       | ✅        | Includes Dockerfile — containerized for portability and testing       |
+| Runtime ≤ 10 seconds             | ✅        | Optimized logic for fast execution                                    |
+| No Internet / No Hardcoding      | ✅        | All paths and files handled dynamically                               |
+| **Multilingual Support**         | ✅        | Handles English and Chinese (Unicode-based PDFs only)                 |
+| **Limitations Clearly Declared** | ✅        | Outlines unsupported cases like image-based PDFs (no OCR yet)         |
