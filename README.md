@@ -55,15 +55,14 @@ Build a fully offline PDF outline extractor that:
 ## 📁 Folder Structure
 
 ```
-adobe/
-├── input/                   # Input PDFs
-│   └── file01.pdf
-├── output/                # Output JSONs
-│   └── outline_output.json
-├── pdf_parser.py     # Main script
-├── Dockerfile              # Docker config
-├── requirements.txt        # Dependencies
-└── README.md               # This file
+📁 adobe-doc-outline-extractor/
+│
+├── Dockerfile
+├── requirements.txt
+├── pdf_parser.py
+├── input/
+├── output/
+└── README.md
 ```
 
 ---
@@ -86,13 +85,14 @@ pip install -r requirements.txt
 **Build the Docker image:**
 
 ```bash
-docker build -t pdf-outline .
+docker build --platform linux/amd64 -t mysolution:debug .
 ```
 
 **Run the container:**
 
-```bash
-docker run --rm -v "$PWD/input:/app/input" -v "$PWD/output:/app/output" pdf-outline
+```For Windows (CMD):
+docker run -v %cd%\input:/app/input -v %cd%\output:/app/output mysolution:debug
+
 ```
 
 > 📌 The script processes all PDFs in `input/` and writes corresponding outline JSONs to `output/`.
