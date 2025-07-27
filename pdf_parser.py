@@ -88,8 +88,8 @@ def process_pdf(input_pdf, output_json):
     print(f"✅ Saved: {output_json}")
 
 def main():
-    input_folder = "pdfs"
-    output_folder = "outputs"
+    input_folder = "input"       # renamed from "pdfs"
+    output_folder = "output"     # renamed from "outputs"
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
 
