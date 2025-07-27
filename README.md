@@ -57,12 +57,12 @@ Build a fully offline PDF outline extractor that:
 ```
 📁 adobe-doc-outline-extractor/
 │
+├── input
+├── output
 ├── Dockerfile
-├── requirements.txt
+├── README.md
 ├── pdf_parser.py
-├── input/
-├── output/
-└── README.md
+└── requirements.txt
 ```
 
 ---
