@@ -7,4 +7,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python", "final_main_FIXED.py"]
+CMD ["python", "pdf_parser.py"]
